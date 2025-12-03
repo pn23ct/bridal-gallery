@@ -450,8 +450,8 @@ document.querySelectorAll('.float-btn').forEach(btn => {
   btn.addEventListener('touchstart', () => handleHoverEffect(btn)); 
 });
 
-// NEW AUTO-VIDEO GALLERY ENGINE (10 videos each player)
-function setupAutoGalleryVideo(videoId, prefix) {
+// AUTO-VIDEO GALLERY ENGINE WITHOUT PAUSE
+function setupAutoGalleryVideo(videoId, fileCount, prefix) {
     const player = document.getElementById(videoId);
     let index = 1;
 
@@ -462,21 +462,21 @@ function setupAutoGalleryVideo(videoId, prefix) {
         const promise = player.play();
         if (promise) promise.catch(() => setTimeout(() => player.play(), 200));
 
-        index = (index % 10) + 1; // loops 1–10
+        index = (index % fileCount) + 1; // loops back to 1 after last video
     }
 
-    player.addEventListener("ended", () => {
-        setTimeout(playNext, 1200);
-    });
+    // When a video ends → immediately play next
+    player.addEventListener("ended", playNext);
 
+    // Start first video
     playNext();
 }
 
-// Video set 1 = a1.mp4 to a10.mp4
-setupAutoGalleryVideo("autoVideo1", "a");
+// 4th gallery = 6 videos a1–a6
+setupAutoGalleryVideo("autoVideo1", 6, "a");
 
-// Video set 2 = b1.mp4 to b10.mp4
-setupAutoGalleryVideo("autoVideo2", "b");
+// 5th gallery = 5 videos b1–b5
+setupAutoGalleryVideo("autoVideo2", 5, "b");
 
 
 </script>
