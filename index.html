@@ -298,8 +298,6 @@ footer{
 
     <!-- GALLERY ITEMS -->
     <div class="gallery-box">
-      <div class="gallery-title">Maharashtrian</div>
-      <div class="gallery-more">Click for more</div>
       <img class="gallery-bg" id="bg1">
       <div class="gallery-inner" id="g1">
         <img class="gallery-face gallery-front">
@@ -308,8 +306,6 @@ footer{
     </div>
 
     <div class="gallery-box">
-      <div class="gallery-title">North Indian</div>
-      <div class="gallery-more">Click for more</div>
       <img class="gallery-bg" id="bg2">
       <div class="gallery-inner" id="g2">
         <img class="gallery-face gallery-front">
@@ -318,8 +314,6 @@ footer{
     </div>
 
     <div class="gallery-box">
-      <div class="gallery-title">South Indian</div>
-      <div class="gallery-more">Click for more</div>
       <img class="gallery-bg" id="bg3">
       <div class="gallery-inner" id="g3">
         <img class="gallery-face gallery-front">
@@ -394,11 +388,11 @@ footer{
 <script>
 // Gallery flip script
 const folders = {
-  maharashtrian: ['m1.jpg','m2.jpg','m3.jpg','m4.jpg','m5.jpg'],
-  north: ['n1.jpg','n2.jpg','n3.jpg','n4.jpg','n5.jpg'],
-  south: ['s1.jpg','s2.jpg','s3.jpg','s4.jpg','s5.jpg']
+  gallery1: ['m1.jpg','m2.jpg','m3.jpg','m4.jpg','m5.jpg'],
+  gallery2: ['n1.jpg','n2.jpg','n3.jpg','n4.jpg','n5.jpg'],
+  gallery3: ['s1.jpg','s2.jpg','s3.jpg','s4.jpg','s5.jpg']
 };
-const paths = ["maharashtrian/","north/","south/","western/","portrait/"];
+const paths = ["gallery1/","gallery2/","gallery3/"];
 function getRandomIndex(length){ return Math.floor(Math.random()*length); }
 function preload(src, cb){ const img = new Image(); img.onload = ()=>cb(null, src); img.onerror = ()=>cb(new Error('Failed to load '+src)); img.src = src; }
 function setupGallery(galleryId, bgId, folderPath, fileList){
@@ -426,9 +420,9 @@ function setupGallery(galleryId, bgId, folderPath, fileList){
   }
   return flip;
 }
-const flip1 = setupGallery('g1','bg1',paths[0],folders.maharashtrian);
-const flip2 = setupGallery('g2','bg2',paths[1],folders.north);
-const flip3 = setupGallery('g3','bg3',paths[2],folders.south);
+const flip1 = setupGallery('g1','bg1',paths[0],folders.gallery1);
+const flip2 = setupGallery('g2','bg2',paths[1],folders.gallery2);
+const flip3 = setupGallery('g3','bg3',paths[2],folders.gallery3);
 const sequence = [flip1, flip3, flip2];
 let index = 0;
 function runSequence(){ 
