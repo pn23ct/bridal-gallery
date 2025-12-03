@@ -452,42 +452,7 @@ document.querySelectorAll('.float-btn').forEach(btn => {
   btn.addEventListener('touchstart', () => handleHoverEffect(btn)); 
 });
 
-// --- VIDEO PLAYLIST ENGINE ---
 
-function setupVideoPlayer(videoElementId, fileList) {
-    const player = document.getElementById(videoElementId);
-    let index = 0;
-
-    player.muted = true;        // VERY IMPORTANT for autoplay
-    player.playsInline = true;  // required for iPhone
-    player.autoplay = true;
-
-    function playNextVideo() {
-        player.src = "videos/" + fileList[index];
-        player.load();
-
-        // Try autoplay safely
-        const playPromise = player.play();
-        if (playPromise !== undefined) {
-            playPromise.catch(() => {
-                // If autoplay was blocked, try again after small delay
-                setTimeout(() => player.play(), 200);
-            });
-        }
-
-        index = (index + 1) % fileList.length;
-    }
-
-    // When video ends → pause → next
-    player.addEventListener("ended", () => {
-        setTimeout(playNextVideo, 2000);
-    });
-
-    playNextVideo();
-}
-
-setupVideoPlayer("player1", ["v1.mp4", "v2.mp4", "v3.mp4"]);
-setupVideoPlayer("player2", ["v4.mp4", "v5.mp4", "v6.mp4"]);
 </script>
 
 </body>
