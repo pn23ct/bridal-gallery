@@ -274,19 +274,21 @@ footer{
 }
 
 .float-btn {
-  background: linear-gradient(180deg, rgba(191,144,43,1), rgba(150,110,33,1)); /* same gold gradient */
-  color: #ffffff;  /* white text */
+  background: linear-gradient(180deg, rgba(191,144,43,1), rgba(150,110,33,1));
+  color: #ffffff;
   padding: 12px 20px;
   border-radius: 25px;
-  border: none;
+  border: 2px dotted #ffd673;  /* GOLDEN DOT OUTLINE */
+  border-width: 3px;  /* thicker dots */
   font-weight: bold;
   font-family: 'Armata', sans-serif;
-  font-size: 12px;
+  font-size: 16px;
   cursor: pointer;
-  opacity: 0.80; /* slightly more visible */
+  opacity: 0.80;
   transition: opacity 0.3s ease, transform 0.2s ease;
   white-space: nowrap;
 }
+
 
 
 .float-btn.hovered {
