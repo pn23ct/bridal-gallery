@@ -273,8 +273,10 @@ footer{
   z-index: 9999;
 }
 
+/* --- BUTTON BASE --- */
 .float-btn {
   position: relative;
+  z-index: 2;                           /* keep label above the bulb layers */
   background: linear-gradient(180deg, rgba(191,144,43,1), rgba(150,110,33,1));
   color: #ffffff;
   padding: 12px 20px;
@@ -283,71 +285,78 @@ footer{
   font-family: 'Armata', sans-serif;
   font-size: 16px;
   cursor: pointer;
-  opacity: 0.85;
-  transition: opacity 0.3s ease, transform 0.2s ease;
+  opacity: 0.95;
   white-space: nowrap;
-  z-index: 1;
+  overflow: visible;                    /* allow the bulb ring to sit outside */
 }
 
-/* ODD DOTS */
+/* ---------- BULB RING LAYERS ---------- */
+/* We'll use two layers ::before (odd bulbs) and ::after (even bulbs).
+   Each is a repeating stripe of gold. We then punch a hole for the button center using a mask,
+   so the bulbs sit only around the button (they don't cover text). */
+
 .float-btn::before,
 .float-btn::after {
   content: "";
   position: absolute;
-  inset: -4px;
-  border-radius: 28px;
+  inset: -8px;                          /* distance of bulbs from button edge - adjust */
+  border-radius: 34px;                  /* slightly larger than button radius */
   pointer-events: none;
-  background-size: 8px 100%; /* dot width */
-}
+  z-index: 1;                           /* behind the button text (button is z-index:2) */
 
-/* Odd bulbs row */
-.float-btn::before {
+  /* bulb sizing - adjust these values to tune bulb width/height and spacing */
+  /* bulbWidth = 8px; tile = bulbWidth*2 = 16px so bulbs touch without gaps */
   background-image:
     repeating-linear-gradient(
       90deg,
-      #ffd673,
-      #ffd673 4px,
-      transparent 4px,
-      transparent 8px
+      #ffd673 0,
+      #ffd673 8px,
+      transparent 8px,
+      transparent 16px
     );
-  animation: glowOdd 1.2s infinite ease-in-out;
+  background-size: 16px 100%;
+  /* We don't want the stripe to cover the center - mask it out */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;          /* punch the hole (WebKit) */
+  mask-composite: exclude;              /* standard name for some browsers */
+  padding: 8px;                         /* the content-box size that will be removed (controls ring thickness) */
+  box-sizing: border-box;
+  filter: brightness(0.6);              /* base dim level for bulbs */
+  transition: filter 0.15s linear, opacity 0.15s linear;
 }
 
-/* Even bulbs row (shifted by half a dot) */
+/* Make the 'even' layer offset by half a bulb so odd/even interlock */
 .float-btn::after {
-  background-image:
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 4px,
-      #ffd673 4px,
-      #ffd673 8px
-    );
-  animation: glowEven 1.2s infinite ease-in-out;
-  animation-delay: 0.6s; /* half-cycle delay for perfect alternation */
+  background-position: 8px 0;           /* shift by half tile (background-size/2) */
 }
 
-/* --- ANIMATIONS --- */
+/* ---------- ALTERNATING ANIMATIONS ---------- */
+/* Odd bulbs glow first, then dim; Even bulbs glow next (delay = half cycle) */
 
-@keyframes glowOdd {
-  0%   { filter: brightness(2) drop-shadow(0 0 6px #ffe08a); }
-  50%  { filter: brightness(0.4); }
-  100% { filter: brightness(2) drop-shadow(0 0 6px #ffe08a); }
+@keyframes glowUp {
+  0%   { filter: brightness(0.5); opacity: 0.6;  filter: drop-shadow(0 0 0 transparent) brightness(0.5); }
+  45%  { filter: brightness(2.0); opacity: 1;    filter: drop-shadow(0 0 8px #ffe08a) brightness(2.0); }
+  55%  { filter: brightness(1.2); opacity: 0.9;  filter: drop-shadow(0 0 4px #ffd77a) brightness(1.2); }
+  100% { filter: brightness(0.5); opacity: 0.6;  filter: drop-shadow(0 0 0 transparent) brightness(0.5); }
 }
 
-@keyframes glowEven {
-  0%   { filter: brightness(2) drop-shadow(0 0 6px #ffe08a); }
-  50%  { filter: brightness(0.4); }
-  100% { filter: brightness(2) drop-shadow(0 0 6px #ffe08a); }
+/* Odd layer animation */
+.float-btn::before {
+  animation: glowUp 1.2s infinite ease-in-out;
 }
 
-
-
-
-.float-btn.hovered {
-  opacity: 1 !important;
-  transform: scale(1.05);
+/* Even layer animation - half-cycle offset */
+.float-btn::after {
+  animation: glowUp 1.2s infinite ease-in-out;
+  animation-delay: 0.6s;                /* half of 1.2s to alternate */
 }
+
+/* Keep hover effect (optional) */
+.float-btn.hovered { transform: scale(1.05); opacity: 1 !important; }
+
+  
 </style>
 </head>
 
