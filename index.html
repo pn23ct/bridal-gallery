@@ -283,40 +283,62 @@ footer{
   font-family: 'Armata', sans-serif;
   font-size: 16px;
   cursor: pointer;
-  opacity: 0.80;
+  opacity: 0.85;
   transition: opacity 0.3s ease, transform 0.2s ease;
   white-space: nowrap;
   z-index: 1;
 }
 
-/* GLOWING ANIMATED DOT BORDER */
-.float-btn::before {
+/* ODD DOTS */
+.float-btn::before,
+.float-btn::after {
   content: "";
   position: absolute;
-  inset: -4px;                /* distance of dots from button */
-  border-radius: 30px;        /* slightly bigger than button */
-  padding: 3px;
-  background:
+  inset: -4px;
+  border-radius: 28px;
+  pointer-events: none;
+  background-size: 8px 100%; /* dot width */
+}
+
+/* Odd bulbs row */
+.float-btn::before {
+  background-image:
     repeating-linear-gradient(
       90deg,
       #ffd673,
       #ffd673 4px,
       transparent 4px,
-      transparent 9px
+      transparent 8px
     );
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: bulbGlow 1.2s infinite linear;
+  animation: glowOdd 1.2s infinite ease-in-out;
 }
 
-/* ANIMATION: BULBS TURN ON AND OFF */
-@keyframes bulbGlow {
-  0%   { filter: brightness(0.5) drop-shadow(0 0 3px #ffeb99); }
-  50%  { filter: brightness(1.8) drop-shadow(0 0 6px #ffe066); }
-  100% { filter: brightness(0.5) drop-shadow(0 0 3px #ffeb99); }
+/* Even bulbs row (shifted by half a dot) */
+.float-btn::after {
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 4px,
+      #ffd673 4px,
+      #ffd673 8px
+    );
+  animation: glowEven 1.2s infinite ease-in-out;
+  animation-delay: 0.6s; /* half-cycle delay for perfect alternation */
+}
+
+/* --- ANIMATIONS --- */
+
+@keyframes glowOdd {
+  0%   { filter: brightness(2) drop-shadow(0 0 6px #ffe08a); }
+  50%  { filter: brightness(0.4); }
+  100% { filter: brightness(2) drop-shadow(0 0 6px #ffe08a); }
+}
+
+@keyframes glowEven {
+  0%   { filter: brightness(2) drop-shadow(0 0 6px #ffe08a); }
+  50%  { filter: brightness(0.4); }
+  100% { filter: brightness(2) drop-shadow(0 0 6px #ffe08a); }
 }
 
 
