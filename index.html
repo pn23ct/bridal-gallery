@@ -608,40 +608,92 @@ setupAutoGalleryVideo("autoVideo1", 6, "a");
 // 5th gallery = 5 videos b1–b5
 setupAutoGalleryVideo("autoVideo2", 5, "b");
 
-  const myWhatsAppNumber = '9940150135';
-  
-  function setupWhatsAppForm(buttonId, formId) {
-    const btn = document.getElementById(buttonId);
-    const form = document.getElementById(formId);
-    const input = form.querySelector('.mobile-input');
-    const sendBtn = form.querySelector('.send-btn');
-  
-    btn.addEventListener('click', () => {
-      form.style.display = form.style.display === 'flex' ? 'none' : 'flex';
-      input.focus();
-    });
-  
-    input.addEventListener('input', () => {
-      const value = input.value.replace(/\D/g, '');
-      input.value = value;
-      sendBtn.disabled = value.length !== 10;
-    });
-  
-    sendBtn.addEventListener('click', () => {
-      const mobile = input.value;
-      const message = encodeURIComponent(`make up enquiry from ${mobile}`);
-      const url = `https://wa.me/${myWhatsAppNumber}?text=${message}`;
-      window.open(url, '_blank');
-      input.value = '';
-      sendBtn.disabled = true;
-      form.style.display = 'none';
-    });
-  }
-  
-  setupWhatsAppForm('bookBtn', 'bookForm');
-  setupWhatsAppForm('whatsappBtn', 'connectForm');  
-  
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const myWhatsAppNumber = "91XXXXXXXXXX"; // ← YOUR NUMBER HERE
 
+  // All floating buttons
+  const buttons = document.querySelectorAll(".float-btn");
+
+  // For storing auto-hide timers
+  const hideTimers = new Map();
+
+  function showForm(btn, form) {
+    // Close all other forms
+    document.querySelectorAll(".inputForm").forEach(f => {
+      if (f !== form) f.style.display = "none";
+    });
+
+    form.style.display = "block";
+    resetHideTimer(btn, form);
+  }
+
+  function hideForm(form) {
+    form.style.display = "none";
+  }
+
+  function resetHideTimer(btn, form) {
+    clearTimeout(hideTimers.get(btn));
+
+    hideTimers.set(btn, setTimeout(() => {
+      form.style.display = "none";
+    }, 10000)); // 10 seconds
+  }
+
+  buttons.forEach((button) => {
+    const form = button.nextElementSibling; 
+    const input = form.querySelector(".mobileInput");
+    const sendButton = form.querySelector(".sendBtn");
+
+    // --- CLICK TO TOGGLE ---
+    button.addEventListener("click", () => {
+      if (form.style.display === "block") {
+        hideForm(form);
+      } else {
+        showForm(button, form);
+      }
+    });
+
+    // --- HOVER TO SHOW ---
+    button.addEventListener("mouseenter", () => {
+      showForm(button, form);
+    });
+
+    // --- INPUT FIELD EVENTS ---
+    input.addEventListener("input", () => {
+      const clean = input.value.replace(/\D/g, "");
+      input.value = clean;
+
+      // Enable or disable send button
+      sendButton.disabled = clean.length !== 10;
+
+      // Keep form open while typing
+      resetHideTimer(button, form);
+    });
+
+    // --- MOUSE LEAVE (start hide timer) ---
+    form.addEventListener("mouseleave", () => {
+      resetHideTimer(button, form);
+    });
+
+    // --- SEND BUTTON CLICK ---
+    sendButton.addEventListener("click", () => {
+      const mobile = input.value;
+
+      if (mobile.length !== 10) return;
+
+      const msg = `make up enquiry from ${mobile}`;
+      const url = `https://wa.me/${myWhatsAppNumber}?text=${encodeURIComponent(msg)}`;
+
+      window.open(url, "_blank");
+
+      // Hide after sending
+      hideForm(form);
+    });
+  });
+});
+
+  
 </script>
 
 </body>
