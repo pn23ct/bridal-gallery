@@ -687,12 +687,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const mobile = input.value;
       if (mobile.length !== 10) return;
 
-      fetch("https://monasalwadi.pythonanywhere.com/send?mobile=" + mobile)
+      fetch("http://monasalwadi.pythonanywhere.com/send?mobile=" + mobile)
         .then(r => r.json())
         .then(res => {
           if (res.status === "ok") {
-            alert("We will contact you soon!");
-            input.value = "";
+            alert("Hello, Thank you for the message. You will receive call back within half an hour, if not please call 90110 47922");
+            input.value = "";         // Clear input box
             sendButton.disabled = true;
             hideForm();
           } else {
