@@ -705,20 +705,29 @@ document.addEventListener("DOMContentLoaded", function () {
     // --- SEND BUTTON CLICK ---
     sendButton.addEventListener("click", () => {
       const mobile = input.value;
-
+    
       if (mobile.length !== 10) return;
-
-      const msg = `make up enquiry from ${mobile}`;
-      const url = `https://wa.me/${myWhatsAppNumber}?text=${encodeURIComponent(msg)}`;
-
-      window.open(url, "_blank");
-
-      // Hide after sending
-      hideForm(form);
+    
+      fetch("https://YOUR_USERNAME.pythonanywhere.com/send?mobile=" + mobile)
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === "ok") {
+            alert("Thank you! We'll contact you soon.");
+    
+            // Reset input
+            input.value = "";
+            sendButton.disabled = true;
+    
+            // Hide form
+            hideForm(form);
+          } else {
+            alert("Server error. Please try again later.");
+          }
+        })
+        .catch(err => {
+          alert("Network error. Please try again.");
+        });
     });
-  });
-});
-
   
 </script>
 
