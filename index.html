@@ -687,7 +687,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const mobile = input.value;
       if (mobile.length !== 10) return;
 
-      fetch("http://monasalwadi.pythonanywhere.com/send?mobile=" + mobile)
+      fetch("https://monasalwadi.pythonanywhere.com/send?mobile=" + mobile)
         .then(r => r.json())
         .then(res => {
           if (res.status === "ok") {
