@@ -534,20 +534,27 @@ footer{
 
 <!-- Floating Buttons -->
 <div class="floating-buttons">
-  <button class="float-btn" id="bookBtn">Bridal trial @ Just 500/-</button>
-  <button class="float-btn" id="whatsappBtn">Connect thru whatsapp</button>
- 
-  <!-- 👉 ADD THIS HTML DIRECTLY AFTER THE BUTTONS -->
-  <div class="whatsapp-form" id="bookForm">
-    <input type="text" placeholder="input mobile" maxlength="10" class="mobile-input">
-    <button class="send-btn" disabled>Send</button>
+
+  <div class="btn-group">
+    <button class="float-btn">Bridal trial @ Just 500/-</button>
+
+    <div class="inputForm">
+      <input type="text" class="mobileInput" placeholder="input mobile" maxlength="10">
+      <button class="sendBtn" disabled>Send</button>
+    </div>
   </div>
-  
-  <div class="whatsapp-form" id="connectForm">
-    <input type="text" placeholder="input mobile" maxlength="10" class="mobile-input">
-    <button class="send-btn" disabled>Send</button>
+
+  <div class="btn-group">
+    <button class="float-btn">Connect thru whatsapp</button>
+
+    <div class="inputForm">
+      <input type="text" class="mobileInput" placeholder="input mobile" maxlength="10">
+      <button class="sendBtn" disabled>Send</button>
+    </div>
   </div>
+
 </div>
+
 
 <script>
 // Gallery flip script
