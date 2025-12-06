@@ -730,10 +730,10 @@ document.addEventListener("DOMContentLoaded", function () {
     sendButton.addEventListener("click", () => {
       const mobile = input.value;
       if (mobile.length !== 10) return;
-
+    
       const msgType = group.getAttribute("data-type");
+    
       fetch("https://monasalwadi.pythonanywhere.com/send?mobile=" + mobile + "&type=" + msgType)
-
         .then(r => r.json())
         .then(res => {
           if (res.status === "ok") {
@@ -747,6 +747,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch(() => alert("Network error."));
     });
+
 
   });
 
