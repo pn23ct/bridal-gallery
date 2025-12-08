@@ -10,122 +10,176 @@
 <link href="https://fonts.googleapis.com/css2?family=Armata&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --accent-black:#000000;
-  --black:#000000;
+:root{
   --card-radius:12px;
   --flip-duration:0.9s;
+  --gold: #bf902b;
+  --black: #000;
 }
 
-* { box-sizing:border-box; }
-
-body {
+/* Reset & base */
+*{box-sizing:border-box;}
+body{
   margin:0;
   font-family: sans-serif;
-  background:#000000;
-  color:#bf902b;
+  background: var(--black);
+  color: var(--gold);
 }
 
 /* ---------------- HEADER ---------------- */
-header {
-  background: #000000;
-  padding: 20px 15px 15px;
+header{
+  background: var(--black);
+  padding: 14px 16px;
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr; /* middle section merged */
+  grid-template-columns: auto 1fr auto; /* left / center / right */
+  gap: 12px;
   align-items: center;
   max-width: 1400px;
   position: fixed;
-  top: 0;
+  top: 8px;
   left: 50%;
   transform: translateX(-50%);
-  width: 100%;
+  width: calc(100% - 32px);
   border-radius: 10px;
   z-index: 999;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.45);
 }
 
 /* Left column */
 .header-left {
   display:flex;
   flex-direction:column;
-  align-items:center;
-  justify-content:center;
+  align-items:flex-start;
+  gap:6px;
 }
-
-.logo {
-  width:78px;
-  height:78px;
+.logo{
+  width:68px;
+  height:68px;
   border-radius:50%;
   overflow:hidden;
-  margin-bottom:8px;
+  flex-shrink:0;
 }
-
-.logo img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.header-left .tagline {
-  font-family:'Armata',sans-serif;
+.logo img{ width:100%; height:100%; object-fit:cover; display:block; }
+.header-left .tagline{
+  font-family: 'Armata', sans-serif;
   font-size:12px;
-  font-weight:bold;
-  text-align:center;
-  line-height:1.4;
+  line-height:1.1;
+  color:var(--gold);
+  font-weight:700;
 }
 
-/* Middle: merged 2nd + 3rd column */
+/* Center (merged) */
 .header-center {
   text-align:center;
   display:flex;
   flex-direction:column;
   align-items:center;
-  font-weight:bold;
 }
-
-.header-center h1 {
-  font-family:'Lobster',cursive;
+.header-center h1{
+  font-family:'Lobster', cursive;
   margin:0;
-  font-size:40px;
+  font-size:34px;
+  line-height:1.05;
+  color:var(--gold);
   font-weight:700;
-  line-height:1.2;
+}
+.header-center p{
+  margin:6px 0 0;
+  font-family:'Armata', sans-serif;
+  font-size:14px;
+  color:var(--gold);
+  font-weight:700;
 }
 
-.header-center p {
-  margin:4px 0 0;
-  font-family:'Armata',sans-serif;
-  font-size:16px;
-  color:#bf902b;
-  font-weight:bold;
-}
-
-/* Right column = nothing or optional image */
-.header-right {
+/* Right column — buttons container */
+.header-buttons{
   display:flex;
-  justify-content:center;
+  flex-direction:column;
+  gap:8px;
+  align-items:flex-end;
+}
+
+/* Button groups (header-only) */
+.btn-group{
+  width:220px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  position:relative;
+}
+
+/* Primary visible button */
+.header-btn{
+  width:100%;
+  background: linear-gradient(180deg, rgba(191,144,43,1), rgba(150,110,33,1));
+  color:#fff;
+  border:0;
+  padding:10px 14px;
+  border-radius:22px;
+  font-family:'Armata',sans-serif;
+  font-weight:700;
+  cursor:pointer;
+  text-align:center;
+  white-space:nowrap;
+  box-shadow: 0 2px 8px rgba(191,144,43,0.12);
+}
+
+/* Hidden input form shown on hover/click */
+.inputForm{
+  display:none;         /* hidden by default */
+  margin-top:8px;
+  width:100%;
+  gap:8px;
   align-items:center;
+  display:flex;
 }
 
-.header-img {
-  max-width:90px;
-  display:block;
-  filter:drop-shadow(0 0 6px #bf902b) drop-shadow(0 0 12px #bf902b);
+/* Input + send button layout */
+.mobileInput{
+  flex:1;
+  min-width:0;
+  padding:8px 10px;
+  border-radius:20px;
+  border:1px solid #fff;
+  background: rgba(0,0,0,0.6);
+  color:#fff;
+  font-size:14px;
+  font-family: 'Armata', sans-serif;
 }
 
-/* ---------------- PAGE ---------------- */
-.page {
+.sendBtn{
+  padding:8px 12px;
+  border-radius:20px;
+  border:0;
+  background:var(--gold);
+  color:#000;
+  font-weight:700;
+  cursor:pointer;
+  font-family:'Armata',sans-serif;
+  opacity:0.75;
+  flex-shrink:0;
+}
+.sendBtn:enabled{ opacity:1; }
+
+/* Thematic input colors for different groups (optional) */
+.btn-group.trial .mobileInput{ background: rgba(0,97,13,0.85); border:1px solid #00aa00; }
+.btn-group.enquiry .mobileInput{ background: rgba(0,0,134,0.85); border:1px solid #0000aa; }
+
+/* ---------------- PAGE / GALLERY ---------------- */
+.page{
   max-width:1400px;
-  margin:150px auto 20px;
+  margin:140px auto 20px; /* space for header */
   padding:12px;
 }
 
-/* ---------------- GALLERY ---------------- */
-.gallery-container {
+/* gallery grid */
+.gallery-container{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
   gap:20px;
 }
 
-.gallery-box {
+.gallery-box{
   width:100%;
   aspect-ratio:3/5;
   min-height:280px;
@@ -139,7 +193,7 @@ header {
 
 .gallery-bg,
 .gallery-face,
-.auto-video {
+.auto-video{
   position:absolute;
   inset:0;
   width:100%;
@@ -148,27 +202,18 @@ header {
   border-radius:inherit;
 }
 
-.gallery-inner {
+.gallery-inner{
   position:absolute;
   inset:0;
   transform-style:preserve-3d;
   transition:transform var(--flip-duration) ease;
 }
-
-.gallery-inner.flipped {
-  transform:rotateY(180deg);
-}
-
-.gallery-face {
-  backface-visibility:hidden;
-}
-
-.gallery-back {
-  transform:rotateY(180deg);
-}
+.gallery-inner.flipped{ transform: rotateY(180deg); }
+.gallery-face{ backface-visibility:hidden; }
+.gallery-back{ transform:rotateY(180deg); }
 
 /* ---------------- FOOTER ---------------- */
-footer {
+footer{
   margin:20px auto 10px;
   max-width:1400px;
   padding:18px;
@@ -176,271 +221,103 @@ footer {
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
   gap:15px;
 }
+.footer-card{ background:#000; border:0.5px solid var(--gold); display:flex; flex-direction:column; }
+.footer-header{ background:linear-gradient(180deg,rgba(191,144,43,1),rgba(150,110,33,1)); padding:12px; text-align:center; font-family:'Armata',sans-serif; font-weight:700; color:#fff; }
+.footer-content{ padding:14px 16px; font-family:'Armata',sans-serif; font-weight:700; color:var(--gold); line-height:1.5; }
 
-.footer-card {
-  background:#000;
-  border-radius:0;
-  box-shadow:none;
-  border:0.5px solid #bf902b;
-  display:flex;
-  flex-direction:column;
+/* ---------------- RESPONSIVE TWEAKS ---------------- */
+@media (max-width: 900px){
+  header{ padding:12px; grid-template-columns: auto 1fr; }
+  .header-buttons{ grid-column: 2 / -1; justify-self:flex-end; }
+  .btn-group{ width:180px; }
+  .header-center h1{ font-size:22px; }
+  .header-center p{ font-size:12px; margin-top:4px; }
+  .page{ margin-top:120px; }
 }
 
-.footer-header {
-  background:linear-gradient(180deg,rgba(191,144,43,1),rgba(150,110,33,1));
-  padding:12px;
-  text-align:center;
-  font-family:'Armata',sans-serif;
-  font-size:18px;
-  font-weight:700;
-  color:#fff;
+/* small phones */
+@media (max-width: 420px){
+  .btn-group{ width:160px; }
 }
 
-.footer-content {
-  padding:14px 16px;
-  font-family:'Armata',sans-serif;
-  font-size:14px;
-  font-weight:bold;
-  line-height:1.5;
-}
-
-.footer-content p {
-  display:flex;
-  align-items:center;
-  margin:4px 0;
-}
-
-/* ---------------- BUTTON GROUPS (HEADER ONLY) ---------------- */
-.btn-group {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  width:220px;
-}
-
-.float-btn {
-  background:linear-gradient(180deg,rgba(191,144,43,1),rgba(150,110,33,1));
-  color:#fff;
-  padding:10px 20px;
-  border-radius:30px;
-  font-family:'Armata',sans-serif;
-  font-size:16px;
-  font-weight:bold;
-  cursor:pointer;
-  white-space:nowrap;
-}
-
-/* Hidden input form */
-.inputForm {
-  display:none;
-  margin-top:8px;
-  width:100%;
-  display:flex;
-  gap:8px;
-}
-
-.mobileInput {
-  flex:1;
-  padding:8px 12px;
-  border-radius:20px;
-  border:1px solid #fff;
-  font-size:14px;
-}
-
-.sendBtn {
-  padding:8px 14px;
-  border-radius:20px;
-  border:none;
-  background:#bf902b;
-  color:#fff;
-  font-weight:bold;
-  cursor:pointer;
-  opacity:0.7;
-}
-
-.sendBtn:enabled {
-  opacity:1;
-}
-
-/* Theme colors */
-.btn-group.trial .mobileInput {
-  background:rgba(0,97,13,0.95);
-  border:1px solid #00aa00;
-}
-
-.btn-group.whatsapp .mobileInput {
-  background:rgba(0,0,134,0.95);
-  border:1px solid #0000aa;
-}
-
-/* Button group container (header) */
-.btn-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 220px;
-  position: relative;
-}
-
-/* Visible button */
-.float-btn {
-  background: linear-gradient(180deg, rgba(191,144,43,1), rgba(150,110,33,1));
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 30px;
-  font-family: 'Armata', sans-serif;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  white-space: nowrap;
-  width: 100%;
-}
-
-/* Hidden input form */
-.inputForm {
-  display: none;
-  margin-top: 8px;
-  width: 100%;
-  gap: 8px;
-  align-items: center;
-}
-
-/* Input styling */
-.mobileInput {
-  flex: 1;
-  padding: 8px 12px;
-  border-radius: 20px;
-  border: 1px solid #fff;
-  font-size: 14px;
-}
-
-/* Send button */
-.sendBtn {
-  padding: 8px 14px;
-  border-radius: 20px;
-  border: none;
-  background: #bf902b;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  opacity: 0.7;
-}
-
-.sendBtn:enabled {
-  opacity: 1;
-}
-
-/* Special theme colors */
-.btn-group.trial .mobileInput {
-  background: rgba(0,97,13,0.9);
-  border: 1px solid #00aa00;
-}
-
-.btn-group.whatsapp .mobileInput {
-  background: rgba(0,0,134,0.9);
-  border: 1px solid #0000aa;
-}
-
-/* Mobile tweaks */
-@media (max-width: 600px) {
-  .btn-group { width: 180px; }
-  .float-btn { font-size: 12px; padding: 8px 14px; }
-  .mobileInput, .sendBtn { font-size: 12px; padding: 6px 10px; }
-}
-
-  
-/* ---------------- MOBILE ADJUSTMENTS ---------------- */
-@media (max-width:600px) {
-
-  header {
-    grid-template-columns:1fr 1fr;
-    padding:12px;
-  }
-
-  .header-center h1 { font-size:24px; }
-  .header-center p { font-size:12px; }
-
-  .logo { width:58px; height:58px; }
-
-  .page { margin-top:120px; }
-
-  .btn-group { width:180px; }
-  .float-btn { font-size:12px; padding:8px 14px; }
-  .mobileInput, .sendBtn { font-size:12px; padding:6px 10px; }
-}
-
-  
+/* visual focus states */
+.header-btn:focus,
+.mobileInput:focus,
+.sendBtn:focus{ outline: 2px solid rgba(191,144,43,0.3); outline-offset:2px; border-radius:18px; }
 </style>
 </head>
-
 <body>
 
 <header>
 
-  <!-- Columns 2 + 3: Main Header (merged) -->
-  <div class="header-center span2">
+  <!-- left: logo + tagline -->
+  <div class="header-left">
+    <div class="logo"><img src="logo/l.JPG" alt="MS logo"></div>
+    <div class="tagline">Transforming Brides<br>to their dream selves</div>
+  </div>
+
+  <!-- center: merged header content -->
+  <div class="header-center">
     <h1>MS Bridal Make-up Artist • Pune</h1>
     <p>पुण्यातील परवडणाऱ्या वधूंचा मेकअप</p>
     <p>Bridal | Hair-Style | Saree Drape</p>
     <p>Engagement | Sangeet | Reception | Mehendi</p>
   </div>
 
-  <!-- Column 4: Buttons -->
-  <div class="header-buttons">
-    <!-- Trial Button -->
-    <div class="btn-group" data-type="trial">
-      <button class="header-btn">Bridal trial @ 1,000/-</button>
-      <div class="inputForm">
-        <input type="text" class="mobileInput" placeholder="Mobile Number" maxlength="10">
-        <button class="sendBtn" disabled>Send</button>
+  <!-- right: header buttons -->
+  <div class="header-buttons" aria-hidden="false">
+
+    <div class="btn-group trial" data-type="trial" aria-label="Bridal trial">
+      <button class="header-btn" type="button" aria-expanded="false">Bridal trial @ 1,000/-</button>
+      <div class="inputForm" aria-hidden="true">
+        <input class="mobileInput" inputmode="numeric" pattern="[0-9]*" maxlength="10" placeholder="Mobile Number" aria-label="Mobile number for trial">
+        <button class="sendBtn" type="button" disabled>Send</button>
       </div>
     </div>
 
-    <!-- Enquiry Button -->
-    <div class="btn-group" data-type="enquiry">
-      <button class="header-btn">Connect to Makeup Artist</button>
-      <div class="inputForm">
-        <input type="text" class="mobileInput" placeholder="Mobile Number" maxlength="10">
-        <button class="sendBtn" disabled>Send</button>
+    <div class="btn-group enquiry" data-type="enquiry" aria-label="Connect to makeup artist">
+      <button class="header-btn" type="button" aria-expanded="false">Connect to Makeup Artist</button>
+      <div class="inputForm" aria-hidden="true">
+        <input class="mobileInput" inputmode="numeric" pattern="[0-9]*" maxlength="10" placeholder="Mobile Number" aria-label="Mobile number for enquiry">
+        <button class="sendBtn" type="button" disabled>Send</button>
       </div>
     </div>
+
   </div>
 </header>
 
-
+<!-- PAGE CONTENT (gallery, footer, etc.) -->
 <div class="page">
   <div class="gallery-container">
 
-    <!-- GALLERY ITEMS -->
     <div class="gallery-box">
-      <img class="gallery-bg" id="bg1">
+      <img class="gallery-bg" id="bg1" alt="">
       <div class="gallery-inner" id="g1">
-        <img class="gallery-face gallery-front">
-        <img class="gallery-face gallery-back">
+        <img class="gallery-face gallery-front" alt="">
+        <img class="gallery-face gallery-back" alt="">
       </div>
     </div>
 
     <div class="gallery-box">
-      <img class="gallery-bg" id="bg2">
+      <img class="gallery-bg" id="bg2" alt="">
       <div class="gallery-inner" id="g2">
-        <img class="gallery-face gallery-front">
-        <img class="gallery-face gallery-back">
+        <img class="gallery-face gallery-front" alt="">
+        <img class="gallery-face gallery-back" alt="">
       </div>
     </div>
 
     <div class="gallery-box">
-      <img class="gallery-bg" id="bg3">
+      <img class="gallery-bg" id="bg3" alt="">
       <div class="gallery-inner" id="g3">
-        <img class="gallery-face gallery-front">
-        <img class="gallery-face gallery-back">
+        <img class="gallery-face gallery-front" alt="">
+        <img class="gallery-face gallery-back" alt="">
       </div>
     </div>
 
     <div class="gallery-box">
       <video class="auto-video" id="autoVideo1" muted playsinline></video>
     </div>
-    
-    <!-- 5th BOX → Auto Video Playlist -->
+
     <div class="gallery-box">
       <video class="auto-video" id="autoVideo2" muted playsinline></video>
     </div>
@@ -448,64 +325,35 @@ footer {
   </div>
 </div>
 
-
 <footer>
   <div class="footer-card">
     <div class="footer-header">Bridal Packages</div>
     <div class="footer-content">
+      <p><span class="item">HD Bridal Package</span><span class="dots"></span><span class="price">₹17,999</span></p>
+      <p><small>Marriage + Haldi + Mehendi + Sangeet</small></p>
+      <p><small>Products: Nars, HUDA, Dior, Kiko, MAC</small></p>
 
-      <p><span class="item">HD Bridal Package</span><span class="dots"></span><span class="price">₹17,999 </span></p>
-      <p style="margin-bottom: 10px;"><small>Marriage + Haldi + Mehendi + Sangeet</small></p>
-      <p style="margin-bottom: 20px;"><small>Products: Nars, HUDA, Dior, Kiko, MAC</small></p>
-      
+      <p style="margin-top:12px;"><span class="item">Basic Bridal Package</span><span class="dots"></span><span class="price">₹15,499</span></p>
+      <p><small>Marriage + Haldi + Mehendi + Sangeet</small></p>
+      <p><small>Products: Forever52, Krylon, Imagic, Europe Girl</small></p>
 
-      <p><span class="item">Basic Bridal Package</span><span class="dots"></span><span class="price">₹15,499 </span></p>
-      <p style="margin-bottom: 10px;"><small>Marriage + Haldi + Mehendi + Sangeet</small></p>
-      <p style="margin-bottom: 30px;"><small>Products: Forever52, Krylon, Imagic, Europe Girl</small></p>
-
-      <p style="margin-bottom: 10px;"><strong>À la carte:-</strong></p>
-
-      <p style="margin-bottom: 15px;"><span class="item">HD Bridal Makeup</span><span class="dots"></span><span class="price">₹9,999</span></p>
-
-      <p style="margin-bottom: 15px;"><span class="item">Basic Bridal Makeup</span><span class="dots"></span><span class="price">₹7,999</span></p>
-
-      <p style="margin-bottom: 15px;"><span class="item">Engagement Makeup</span><span class="dots"></span><span class="price">₹4,999</span></p>
-
-      <p style="margin-bottom: 15px;"><span class="item">Mehendi Event Makeup</span><span class="dots"></span><span class="price">₹3,500</span></p>
-
-      <p style="margin-bottom: 15px;"><span class="item">Sangeet Event Makeup</span><span class="dots"></span><span class="price">₹3,500</span></p>
-
-      <p style="margin-bottom: 5px;"><span class="item">Cocktail Party Makeup</span><span class="dots"></span><span class="price">₹3,500</span></p>
-
+      <p style="margin-top:12px;"><strong>À la carte:</strong></p>
+      <p>HD Bridal Makeup — ₹9,999</p>
+      <p>Basic Bridal Makeup — ₹7,999</p>
+      <p>Engagement Makeup — ₹4,999</p>
+      <p>Mehendi Event Makeup — ₹3,500</p>
     </div>
   </div>
 
-
-<div class="footer-card">
-  <div class="footer-header">Other Packages</div>
-  <div class="footer-content">
-
-    <!-- Baby Shower -->
-    <p><span class="item"><strong>Baby-Shower Package</strong></span><span class="dots"></span><span class="price">₹3,500</span></p>
-    <p style="margin-bottom: 20px;"><small>Makeup + Hair-Styling + Saree Draping</small></p>
-
-    <!-- Guest/Sider -->
-    <p><span class="item"><strong>Guest / Sider Package</strong></span><span class="dots"></span><span class="price">₹2,500</span></p>
-    <p style="margin-bottom: 30px;"><small>Makeup + Hair-Styling + Saree Draping</small></p>
-
-
-    <!-- Miscellaneous -->
-    <p style="margin-bottom: 10px;"><strong>Miscellaneous:-</strong></p>
-
-    <p style="margin-bottom: 15px;"><span class="item">Hair-Styling</span><span class="dots"></span><span class="price">₹800</span></p>
-
-    <p style="margin-bottom: 15px;"><span class="item">Saree Draping</span><span class="dots"></span><span class="price">₹500</span></p>
-
-    <p style="margin-bottom: 5px;"><span class="item">Saree Pre-pleating</span><span class="dots"></span><span class="price">₹200</span></p>
-
+  <div class="footer-card">
+    <div class="footer-header">Other Packages</div>
+    <div class="footer-content">
+      <p>Baby-Shower Package — ₹3,500</p>
+      <p>Guest / Sider Package — ₹2,500</p>
+      <p>Hair-Styling — ₹800</p>
+      <p>Saree Draping — ₹500</p>
+    </div>
   </div>
-</div>
- 
 
   <div class="footer-card">
     <div class="footer-header">Satisfied Souls</div>
@@ -515,87 +363,66 @@ footer {
     </div>
   </div>
 
-
   <div class="footer-card">
     <div class="footer-header">Policies - Must read</div>
     <div class="footer-content">
-      <p style="margin-bottom: 20px;">Kindly Book 2-3 weeks in advance</p>
-      <p style="margin-bottom: 20px;">Advance for booking - 30% of total</p>
-      <p style="margin-bottom: 20px;">Slot will be booked when Advance payment completed</p>
-      <p style="margin-bottom: 20px;">Makeup Artist will travel to venue</p>
-      <p style="margin-bottom: 20px;">Client will bear the travel charges</p>
-      <p style="margin-bottom: 20px;">Trial amount adjusted, if booked</p>
+      <p>Kindly Book 2-3 weeks in advance</p>
+      <p>Advance for booking - 30% of total</p>
+      <p>Slot will be booked when Advance payment completed</p>
+      <p>Makeup Artist will travel to venue (client pays travel)</p>
+      <p>Trial amount adjusted, if booked</p>
     </div>
   </div>
-
 </footer>
 
-  <p style="font-size: 70%; text-align: center; margin-top: 10px; opacity: 0.7;">
-  MS Bridal — Website published on Dec 8, 2025.  
-  The MS logo and brand are trademarked and copyright-protected.  
-  All content on this website is personal property and may not be copied, reused, or reproduced without permission.</p>
-  
+<p style="font-size:70%; text-align:center; margin-top:10px; opacity:0.7;">
+  MS Bridal — Website published on Dec 8, 2025. All content is copyright-protected.
+</p>
 
+<!-- ---------------- SCRIPTS ---------------- -->
 <script>
-// --------------------------------
-// GALLERY FLIP SCRIPT
-// --------------------------------
+// ---------------- Gallery flip (kept as original behavior) ----------------
 const folders = {
   gallery1: ['m1.jpg','m2.jpg','m3.jpg','m4.jpg','m5.jpg','m6.jpg','m7.jpg','m8.jpg','m9.jpg','m10.jpg','m11.jpg','m12.jpg','m13.jpg'],
   gallery2: ['n1.jpg','n2.jpg','n3.jpg','n4.jpg','n5.jpg','n6.jpg','n7.jpg','n8.jpg','n9.jpg','n10.jpg','n11.jpg','n12.jpg','n13.jpg'],
   gallery3: ['s1.jpg','s2.jpg','s3.jpg','s4.jpg','s5.jpg','s6.jpg','s7.jpg','s8.jpg','s9.jpg','s10.jpg','s11.jpg','s12.jpg','s13.jpg']
 };
-
 const paths = ["gallery1/","gallery2/","gallery3/"];
 
 function getRandomIndex(len){ return Math.floor(Math.random()*len); }
+function preload(src, cb){ const img=new Image(); img.onload=()=>cb(null,src); img.onerror=()=>cb(new Error('fail')); img.src=src; }
 
-function preload(src, cb){
-  const img = new Image();
-  img.onload = ()=>cb(null, src);
-  img.onerror = ()=>cb(new Error("Failed to load "+src));
-  img.src = src;
-}
-
-function setupGallery(gid, bgid, folder, files){
+function setupGallery(gid,bgid,folder,files){
   const inner = document.getElementById(gid);
   const bgEl = document.getElementById(bgid);
-  const front = inner.querySelector(".gallery-front");
-  const back = inner.querySelector(".gallery-back");
-
-  let flipped = false;
-
-  let idxFront = getRandomIndex(files.length);
-  let idxBack = getRandomIndex(files.length);
-  while(idxBack === idxFront) idxBack = getRandomIndex(files.length);
-
+  const front = inner.querySelector('.gallery-front');
+  const back = inner.querySelector('.gallery-back');
+  let flipped=false;
+  let idxFront=getRandomIndex(files.length);
+  let idxBack=getRandomIndex(files.length);
+  while(idxBack===idxFront) idxBack=getRandomIndex(files.length);
   front.src = folder + files[idxFront];
   back.src  = folder + files[idxBack];
-  bgEl.src  = folder + files[idxFront];
-
+  bgEl.src  = front.src;
   function flip(){
-    let nextIdx = getRandomIndex(files.length);
-    let hidden = flipped ? front : back;
-    let nextImage = folder + files[nextIdx];
-
-    preload(nextImage, () => {
+    const nextIdx = getRandomIndex(files.length);
+    const hidden = flipped ? front : back;
+    const nextImage = folder + files[nextIdx];
+    preload(nextImage, ()=> {
       hidden.src = nextImage;
       bgEl.src = nextImage;
       flipped = !flipped;
-      requestAnimationFrame(() => inner.classList.toggle("flipped"));
+      requestAnimationFrame(()=> inner.classList.toggle('flipped'));
     });
   }
-
   return flip;
 }
 
-const flip1 = setupGallery("g1","bg1",paths[0],folders.gallery1);
-const flip2 = setupGallery("g2","bg2",paths[1],folders.gallery2);
-const flip3 = setupGallery("g3","bg3",paths[2],folders.gallery3);
-
+const flip1 = setupGallery('g1','bg1',paths[0],folders.gallery1);
+const flip2 = setupGallery('g2','bg2',paths[1],folders.gallery2);
+const flip3 = setupGallery('g3','bg3',paths[2],folders.gallery3);
 const sequence = [flip1, flip3, flip2];
 let seqIndex = 0;
-
 function runSequence(){
   sequence[seqIndex]();
   seqIndex = (seqIndex + 1) % sequence.length;
@@ -603,212 +430,170 @@ function runSequence(){
 }
 setTimeout(runSequence, 1000);
 
-
-// --------------------------------
-// HOVER EFFECT FOR FLOATING BUTTONS
-// --------------------------------
-function handleHoverEffect(btn){
-  btn.classList.add("hovered");
-  setTimeout(() => btn.classList.remove("hovered"), 5000);
-}
-
-document.querySelectorAll(".float-btn").forEach(btn => {
-  btn.addEventListener("mouseenter", () => handleHoverEffect(btn));
-  btn.addEventListener("touchstart", () => handleHoverEffect(btn));
-});
-
-
-// --------------------------------
-// AUTO-VIDEO GALLERY ENGINE
-// --------------------------------
+// ---------------- Auto-video playlists ----------------
 function setupAutoGalleryVideo(videoId, fileCount, prefix){
   const player = document.getElementById(videoId);
   let index = 1;
-
   function playNext(){
     player.src = "videos/" + prefix + index + ".mp4";
     player.load();
-
     const p = player.play();
-    if (p) p.catch(() => setTimeout(() => player.play(), 200));
-
+    if (p) p.catch(()=> setTimeout(()=>player.play(),200));
     index = (index % fileCount) + 1;
   }
-
-  player.addEventListener("ended", playNext);
+  player.addEventListener('ended', playNext);
   playNext();
 }
-
 setupAutoGalleryVideo("autoVideo1", 6, "a");
 setupAutoGalleryVideo("autoVideo2", 5, "b");
 
+// ---------------- Header button behavior (Option A) ----------------
+document.addEventListener('DOMContentLoaded', () => {
 
-// ---------------------------------------------
-// FLOATING BUTTONS + MOBILE INPUT FIXED VERSION
-// ---------------------------------------------
-document.addEventListener("DOMContentLoaded", function(){
+  // detect hover-capable devices (desktop)
+  const hasHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-  const groups = document.querySelectorAll(".btn-group");
+  // helper to show/hide form for a group
+  function showFormFor(group){
+    // hide others
+    document.querySelectorAll('.btn-group').forEach(g => {
+      if (g !== group){
+        const otherForm = g.querySelector('.inputForm');
+        const otherBtn = g.querySelector('.header-btn');
+        otherForm.style.display = 'none';
+        otherBtn.setAttribute('aria-expanded','false');
+      }
+    });
+    const form = group.querySelector('.inputForm');
+    const btn  = group.querySelector('.header-btn');
+    form.style.display = 'flex';
+    form.setAttribute('aria-hidden','false');
+    btn.setAttribute('aria-expanded','true');
+    const input = form.querySelector('.mobileInput');
+    // small timeout helps mobile browsers open keyboard reliably
+    setTimeout(()=> input.focus(), 160);
+  }
+  function hideFormFor(group){
+    const form = group.querySelector('.inputForm');
+    const btn  = group.querySelector('.header-btn');
+    form.style.display = 'none';
+    form.setAttribute('aria-hidden','true');
+    btn.setAttribute('aria-expanded','false');
+    const input = form.querySelector('.mobileInput');
+    input.value = '';
+    const send = form.querySelector('.sendBtn');
+    send.disabled = true;
+  }
 
-  groups.forEach(group => {
+  // auto-hide timer per group
+  const timers = new WeakMap();
 
-    const btn        = group.querySelector(".float-btn");
-    const form       = group.querySelector(".inputForm");
-    const input      = group.querySelector(".mobileInput");
-    const sendButton = group.querySelector(".sendBtn");
+  function resetTimer(group){
+    clearTimeout(timers.get(group));
+    const t = setTimeout(()=> hideFormFor(group), 10000);
+    timers.set(group, t);
+  }
 
-    let timer;
+  // attach handlers for each group
+  document.querySelectorAll('.btn-group').forEach(group => {
+    const btn = group.querySelector('.header-btn');
+    const form = group.querySelector('.inputForm');
+    const input = form.querySelector('.mobileInput');
+    const send = form.querySelector('.sendBtn');
 
-    function showForm(ev){
-      if (ev && ev.preventDefault) ev.preventDefault();
+    // ensure initial state
+    form.style.display = 'none';
+    form.setAttribute('aria-hidden','true');
+    btn.setAttribute('aria-expanded','false');
+    send.disabled = true;
 
-      document.querySelectorAll(".btn-group").forEach(g => {
-        if (g !== group) {
-          g.querySelector(".inputForm").style.display = "none";
-          g.querySelector(".float-btn").style.visibility = "visible";
-        }
+    // Desktop: hover shows, hides on leave
+    if (hasHover){
+      group.addEventListener('mouseenter', () => {
+        showFormFor(group);
+        resetTimer(group);
       });
-
-      btn.style.visibility = "hidden";
-      form.style.display = "flex";
-
-      setTimeout(() => { try{ input.focus(); }catch(e){} }, 250);
-
-      resetTimer();
+      group.addEventListener('mouseleave', () => {
+        // small delay so user can move to input without immediate hide
+        // only hide if input not focused
+        setTimeout(()=>{
+          if (document.activeElement !== input) hideFormFor(group);
+        }, 120);
+        clearTimeout(timers.get(group));
+      });
     }
 
-    function hideForm(){
-      form.style.display = "none";
-      btn.style.visibility = "visible";
-      try{ input.blur(); }catch(e){}
-    }
+    // Click / touch → toggle (mobile & desktop click)
+    // Use touchstart to be snappy on mobile
+    const openOnPointer = (ev) => {
+      ev.preventDefault && ev.preventDefault();
+      // toggle
+      if (form.style.display === 'flex'){
+        hideFormFor(group);
+      } else {
+        showFormFor(group);
+        resetTimer(group);
+      }
+    };
 
-    function resetTimer(){
-      clearTimeout(timer);
-      timer = setTimeout(() => hideForm(), 10000);
-    }
+    btn.addEventListener('click', openOnPointer);
+    btn.addEventListener('touchstart', (e) => {
+      // prevent double activation on some devices
+      e.preventDefault();
+      openOnPointer(e);
+    }, {passive:false});
 
-    // OPEN FORM
-    btn.addEventListener("click", (e) => showForm(e));
-    btn.addEventListener("touchstart", (e) => { e.preventDefault(); showForm(e); }, { passive:false });
-    btn.addEventListener("mouseenter", showForm);
-
-    // INPUT LOGIC
-    input.addEventListener("input", () => {
-      input.value = input.value.replace(/\D/g, "");
-      sendButton.disabled = input.value.length !== 10;
-      resetTimer();
+    // Input events: validate
+    input.addEventListener('input', () => {
+      input.value = input.value.replace(/\D/g,'').slice(0,10); // digits only, max 10
+      send.disabled = input.value.trim().length !== 10;
+      resetTimer(group);
     });
 
-    input.addEventListener("focus", resetTimer);
-    input.addEventListener("keyup", resetTimer);
-    form.addEventListener("mouseleave", resetTimer);
+    input.addEventListener('focus', () => {
+      resetTimer(group);
+    });
 
-    // SEND MESSAGE (MOBILE-SAFE)
-    function sendMessage(){
-      const mobile = input.value;
+    input.addEventListener('blur', () => {
+      // keep it open shortly to avoid keyboard flicker; we'll auto-hide with timer
+      resetTimer(group);
+    });
+
+    // Send action (real API)
+    send.addEventListener('click', () => {
+      const mobile = input.value.trim();
       if (mobile.length !== 10) return;
+      const msgType = group.dataset.type || 'unknown';
 
-      const msgType = group.getAttribute("data-type");
+      // disable UI while sending
+      send.disabled = true;
+      send.textContent = 'Sending...';
 
-      fetch("https://monasalwadi.pythonanywhere.com/send?mobile=" + mobile + "&type=" + msgType)
-        .then(r => r.json())
-        .then(res => {
-          if (res.status === "ok") {
-            alert("Hello, Thank you for the message. You will receive call back within half an hour, if not please call 90110 47922");
-            input.value = "";
-            sendButton.disabled = true;
-            hideForm();
+      fetch("https://monasalwadi.pythonanywhere.com/send?mobile=" + encodeURIComponent(mobile) + "&type=" + encodeURIComponent(msgType))
+        .then(resp => resp.json())
+        .then(json => {
+          if (json && json.status === 'ok') {
+            alert("Thank you — we received your message. We'll call you back soon.");
+            hideFormFor(group);
           } else {
-            alert("Server error, try again.");
+            alert("Server error, please try again.");
+            send.disabled = false;
+            send.textContent = 'Send';
           }
         })
-        .catch(() => alert("Network error."));
-    }
-
-    sendButton.addEventListener("click", sendMessage);
-    sendButton.addEventListener("touchend", (e) => { e.preventDefault(); sendMessage(); });
-
-  });
-
-});
-
-
-// --------------------------------
-// AUTO RESTORE FLOATING BUTTONS
-// --------------------------------
-const floatingArea = document.querySelector(".floating-buttons");
-let restoreTimer;
-
-floatingArea.addEventListener("mouseleave", () => {
-  clearTimeout(restoreTimer);
-  restoreTimer = setTimeout(() => {
-    document.querySelectorAll(".btn-group").forEach(group => {
-      group.querySelector(".inputForm").style.display = "none";
-      group.querySelector(".float-btn").style.visibility = "visible";
+        .catch(() => {
+          alert("Network error — please try again.");
+          send.disabled = false;
+          send.textContent = 'Send';
+        })
+        .finally(() => {
+          // restore button label if still visible
+          setTimeout(()=> send.textContent = 'Send', 600);
+        });
     });
-  }, 500);
+
+  }); // end .btn-group loop
 });
-
-
-// --------------------------------
-// MOBILE KEYBOARD DETECTION
-// --------------------------------
-function keyboardOpen(){
-  document.querySelector(".floating-buttons").classList.add("keyboard-open");
-}
-
-function keyboardClose(){
-  document.querySelector(".floating-buttons").classList.remove("keyboard-open");
-}
-
-document.querySelectorAll(".btn-group").forEach(group => {
-
-  const button = group.querySelector(".float-btn");
-  const form = group.querySelector(".inputForm");
-  const input = group.querySelector(".mobileInput");
-  const sendBtn = group.querySelector(".sendBtn");
-
-  // SHOW on click/tap
-  button.addEventListener("click", () => {
-    form.style.display = "flex";
-    input.focus();
-  });
-
-  // DESKTOP ONLY: show on hover
-  group.addEventListener("mouseenter", () => {
-    if (window.innerWidth > 600) {
-      form.style.display = "flex";
-    }
-  });
-
-  // DESKTOP ONLY: hide on mouse leave
-  group.addEventListener("mouseleave", () => {
-    if (window.innerWidth > 600) {
-      form.style.display = "none";
-      input.value = "";
-      sendBtn.disabled = true;
-    }
-  });
-
-  // Enable send button only if number entered
-  input.addEventListener("input", () => {
-    sendBtn.disabled = input.value.trim().length < 10;
-  });
-
-  // Send action
-  sendBtn.addEventListener("click", () => {
-    alert("Sent: " + input.value);
-    input.value = "";
-    sendBtn.disabled = true;
-    form.style.display = "none";
-  });
-
-});
-
-  
 </script>
-
-
 </body>
 </html>
