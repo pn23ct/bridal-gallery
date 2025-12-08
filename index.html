@@ -428,6 +428,79 @@ footer .footer-card:last-child {
   width: 100%;
 }
 
+/* ------------------------------------
+   MOBILE HEADER FIX
+------------------------------------ */
+@media (max-width: 600px) {
+
+  header {
+    grid-template-columns: 1fr 1fr;
+    padding: 10px;
+    margin-top: 0;
+  }
+
+  .logo {
+    width: 58px;
+    height: 58px;
+    margin-bottom: 4px;
+  }
+
+  .header-left .tagline {
+    font-size: 10px;
+  }
+
+  .header-right h1 {
+    font-size: 22px;
+    line-height: 1.2;
+  }
+
+  .header-right p {
+    font-size: 12px;
+  }
+
+  .page {
+    margin-top: 120px !important;  /* Reduced from 150px */
+  }
+}
+
+/* ------------------------------------
+   MOBILE FLOATING BUTTON FIX
+------------------------------------ */
+@media (max-width: 600px) {
+
+  .floating-buttons {
+    right: 10px;
+    top: 88%;
+    gap: 10px;
+  }
+
+  .float-btn {
+    padding: 8px 14px;
+    font-size: 12px;
+    border-radius: 22px;
+  }
+
+  .btn-group {
+    width: 180px;
+  }
+
+  .mobileInput {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .sendBtn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}
+
+/* When input is focused, push entire button panel upward */
+@media (max-width: 600px) {
+  .floating-buttons.keyboard-open {
+    top: 65% !important;
+  }
+}
   
 </style>
 </head>
@@ -798,6 +871,22 @@ floatingArea.addEventListener("mouseleave", () => {
     });
 
   }, 500); // 0.5 seconds
+});
+
+// Mobile keyboard detection fix
+function keyboardOpen() {
+    document.querySelector(".floating-buttons")
+            .classList.add("keyboard-open");
+}
+
+function keyboardClose() {
+    document.querySelector(".floating-buttons")
+            .classList.remove("keyboard-open");
+}
+
+document.querySelectorAll(".mobileInput").forEach(inp => {
+    inp.addEventListener("focus", keyboardOpen);
+    inp.addEventListener("blur", keyboardClose);
 });
 
   
