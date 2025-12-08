@@ -309,6 +309,36 @@ footer{
   .mobileInput { font-size: 13px; padding: 8px; }
 }
 
+/* Mobile layout: side-by-side buttons */
+@media (max-width: 700px) {
+  .header-buttons {
+    flex-direction: row;           /* horizontal layout */
+    justify-content: space-between; /* spread buttons */
+    width: 100%;
+    gap: 8px;
+  }
+
+  .btn-group {
+    flex: 1 1 48%;                 /* each button takes ~half width */
+  }
+
+  .header-btn {
+    width: 100%;                   /* fill btn-group */
+    text-align: center;
+  }
+
+  .inputForm {
+    width: 100%;                   /* form fills button space */
+    flex-direction: row;
+  }
+
+  .mobileInput {
+    width: 100%;
+  }
+}
+
+
+  
 /* visual focus states */
 .header-btn:focus,
 .mobileInput:focus,
