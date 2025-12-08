@@ -529,6 +529,17 @@ footer .footer-card:last-child {
   }
 }
 
+.floating-buttons {
+    position: fixed;
+    top: 70px;   /* adjust based on header height */
+    right: 20px;
+    z-index: 9999;
+}
+
+.floating-buttons.keyboard-open {
+    top: 70px; /* stays fixed, won't jump */
+}
+
   
 </style>
 </head>
@@ -716,110 +727,131 @@ footer .footer-card:last-child {
 
 
 <script>
-// Gallery flip script
+// --------------------------------
+// GALLERY FLIP SCRIPT
+// --------------------------------
 const folders = {
-  gallery1: ['m1.jpg','m2.jpg','m3.jpg','m4.jpg','m5.jpg','m6.jpg', 'm7.jpg','m8.jpg','m9.jpg','m10.jpg','m11.jpg','m12.jpg', 'm13.jpg'],
-  gallery2: ['n1.jpg','n2.jpg','n3.jpg','n4.jpg','n5.jpg','n6.jpg', 'n7.jpg','n8.jpg','n9.jpg','n10.jpg','n11.jpg','n12.jpg','n13.jpg'],
-  gallery3: ['s1.jpg','s2.jpg','s3.jpg','s4.jpg','s5.jpg','s6.jpg', 's7.jpg','s8.jpg','s9.jpg','s10.jpg','s11.jpg','s12.jpg','s13.jpg']
+  gallery1: ['m1.jpg','m2.jpg','m3.jpg','m4.jpg','m5.jpg','m6.jpg','m7.jpg','m8.jpg','m9.jpg','m10.jpg','m11.jpg','m12.jpg','m13.jpg'],
+  gallery2: ['n1.jpg','n2.jpg','n3.jpg','n4.jpg','n5.jpg','n6.jpg','n7.jpg','n8.jpg','n9.jpg','n10.jpg','n11.jpg','n12.jpg','n13.jpg'],
+  gallery3: ['s1.jpg','s2.jpg','s3.jpg','s4.jpg','s5.jpg','s6.jpg','s7.jpg','s8.jpg','s9.jpg','s10.jpg','s11.jpg','s12.jpg','s13.jpg']
 };
+
 const paths = ["gallery1/","gallery2/","gallery3/"];
-function getRandomIndex(length){ return Math.floor(Math.random()*length); }
-function preload(src, cb){ const img = new Image(); img.onload = ()=>cb(null, src); img.onerror = ()=>cb(new Error('Failed to load '+src)); img.src = src; }
-function setupGallery(galleryId, bgId, folderPath, fileList){
-  const inner = document.getElementById(galleryId);
-  const bgEl = document.getElementById(bgId);
-  const front = inner.querySelector('.gallery-front');
-  const back = inner.querySelector('.gallery-back');
-  let flipped=false;
-  let idxFront=getRandomIndex(fileList.length);
-  let idxBack=getRandomIndex(fileList.length);
-  while(idxBack===idxFront) idxBack=getRandomIndex(fileList.length);
-  front.src=folderPath+fileList[idxFront];
-  back.src=folderPath+fileList[idxBack];
-  bgEl.src=front.src;
+
+function getRandomIndex(len){ return Math.floor(Math.random()*len); }
+
+function preload(src, cb){
+  const img = new Image();
+  img.onload = ()=>cb(null, src);
+  img.onerror = ()=>cb(new Error("Failed to load "+src));
+  img.src = src;
+}
+
+function setupGallery(gid, bgid, folder, files){
+  const inner = document.getElementById(gid);
+  const bgEl = document.getElementById(bgid);
+  const front = inner.querySelector(".gallery-front");
+  const back = inner.querySelector(".gallery-back");
+
+  let flipped = false;
+
+  let idxFront = getRandomIndex(files.length);
+  let idxBack = getRandomIndex(files.length);
+  while(idxBack === idxFront) idxBack = getRandomIndex(files.length);
+
+  front.src = folder + files[idxFront];
+  back.src  = folder + files[idxBack];
+  bgEl.src  = folder + files[idxFront];
+
   function flip(){
-    let nextIdx=getRandomIndex(fileList.length);
+    let nextIdx = getRandomIndex(files.length);
     let hidden = flipped ? front : back;
-    let nextImage = folderPath+fileList[nextIdx];
-    preload(nextImage, ()=> { 
-        hidden.src=nextImage; 
-        bgEl.src=nextImage; 
-        flipped = !flipped; 
-        requestAnimationFrame(()=> inner.classList.toggle('flipped')); 
+    let nextImage = folder + files[nextIdx];
+
+    preload(nextImage, () => {
+      hidden.src = nextImage;
+      bgEl.src = nextImage;
+      flipped = !flipped;
+      requestAnimationFrame(() => inner.classList.toggle("flipped"));
     });
   }
+
   return flip;
 }
-const flip1 = setupGallery('g1','bg1',paths[0],folders.gallery1);
-const flip2 = setupGallery('g2','bg2',paths[1],folders.gallery2);
-const flip3 = setupGallery('g3','bg3',paths[2],folders.gallery3);
+
+const flip1 = setupGallery("g1","bg1",paths[0],folders.gallery1);
+const flip2 = setupGallery("g2","bg2",paths[1],folders.gallery2);
+const flip3 = setupGallery("g3","bg3",paths[2],folders.gallery3);
+
 const sequence = [flip1, flip3, flip2];
-let index = 0;
-function runSequence(){ 
-  sequence[index](); 
-  index = (index + 1) % sequence.length; 
-  setTimeout(runSequence, 1000); 
+let seqIndex = 0;
+
+function runSequence(){
+  sequence[seqIndex]();
+  seqIndex = (seqIndex + 1) % sequence.length;
+  setTimeout(runSequence, 1000);
 }
 setTimeout(runSequence, 1000);
 
-// Floating buttons hover
-function handleHoverEffect(btn){ 
-  btn.classList.add('hovered'); 
-  setTimeout(() => { btn.classList.remove('hovered'); }, 5000); 
+
+// --------------------------------
+// HOVER EFFECT FOR FLOATING BUTTONS
+// --------------------------------
+function handleHoverEffect(btn){
+  btn.classList.add("hovered");
+  setTimeout(() => btn.classList.remove("hovered"), 5000);
 }
-document.querySelectorAll('.float-btn').forEach(btn => { 
-  btn.addEventListener('mouseenter', () => handleHoverEffect(btn)); 
-  btn.addEventListener('touchstart', () => handleHoverEffect(btn)); 
+
+document.querySelectorAll(".float-btn").forEach(btn => {
+  btn.addEventListener("mouseenter", () => handleHoverEffect(btn));
+  btn.addEventListener("touchstart", () => handleHoverEffect(btn));
 });
 
-// AUTO-VIDEO GALLERY ENGINE WITHOUT PAUSE
-function setupAutoGalleryVideo(videoId, fileCount, prefix) {
-    const player = document.getElementById(videoId);
-    let index = 1;
 
-    function playNext() {
-        player.src = "videos/" + prefix + index + ".mp4";
-        player.load();
+// --------------------------------
+// AUTO-VIDEO GALLERY ENGINE
+// --------------------------------
+function setupAutoGalleryVideo(videoId, fileCount, prefix){
+  const player = document.getElementById(videoId);
+  let index = 1;
 
-        const promise = player.play();
-        if (promise) promise.catch(() => setTimeout(() => player.play(), 200));
+  function playNext(){
+    player.src = "videos/" + prefix + index + ".mp4";
+    player.load();
 
-        index = (index % fileCount) + 1; // loops back to 1 after last video
-    }
+    const p = player.play();
+    if (p) p.catch(() => setTimeout(() => player.play(), 200));
 
-    // When a video ends → immediately play next
-    player.addEventListener("ended", playNext);
+    index = (index % fileCount) + 1;
+  }
 
-    // Start first video
-    playNext();
+  player.addEventListener("ended", playNext);
+  playNext();
 }
 
-// 4th gallery = 6 videos a1–a6
 setupAutoGalleryVideo("autoVideo1", 6, "a");
-
-// 5th gallery = 5 videos b1–b5
 setupAutoGalleryVideo("autoVideo2", 5, "b");
 
 
-document.addEventListener("DOMContentLoaded", function () {
+// ---------------------------------------------
+// FLOATING BUTTONS + MOBILE INPUT FIXED VERSION
+// ---------------------------------------------
+document.addEventListener("DOMContentLoaded", function(){
 
   const groups = document.querySelectorAll(".btn-group");
 
   groups.forEach(group => {
 
-    const btn = group.querySelector(".float-btn");
-    const form = group.querySelector(".inputForm");
-    const input = group.querySelector(".mobileInput");
+    const btn        = group.querySelector(".float-btn");
+    const form       = group.querySelector(".inputForm");
+    const input      = group.querySelector(".mobileInput");
     const sendButton = group.querySelector(".sendBtn");
 
     let timer;
 
-    function showForm(ev) {
-
-      // Prevent default on touch/click to avoid accidental blur on mobile
+    function showForm(ev){
       if (ev && ev.preventDefault) ev.preventDefault();
 
-      // Hide every other form
       document.querySelectorAll(".btn-group").forEach(g => {
         if (g !== group) {
           g.querySelector(".inputForm").style.display = "none";
@@ -827,58 +859,43 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
 
-      // Show this form
       btn.style.visibility = "hidden";
       form.style.display = "flex";
 
-      // Ensure the input receives focus after the form becomes visible.
-      // Use a short timeout — required on many mobile browsers (Safari/Chrome).
-      setTimeout(() => {
-        try {
-          input.focus();
-        } catch (e) {
-          // ignore if focus() throws for some reason
-        }
-      }, 250);
+      setTimeout(() => { try{ input.focus(); }catch(e){} }, 250);
 
       resetTimer();
     }
 
-    function hideForm() {
+    function hideForm(){
       form.style.display = "none";
       btn.style.visibility = "visible";
-      // blur input to be safe
-      try { input.blur(); } catch (e) {}
+      try{ input.blur(); }catch(e){}
     }
 
-    function resetTimer() {
+    function resetTimer(){
       clearTimeout(timer);
       timer = setTimeout(() => hideForm(), 10000);
     }
 
-    // Use click + touchstart (non-passive) so we can preventDefault and avoid focus/blur races.
+    // OPEN FORM
     btn.addEventListener("click", (e) => showForm(e));
-    btn.addEventListener("touchstart", (e) => { e.preventDefault(); showForm(e); }, { passive: false });
-
-    // Also allow the desktop hover to open it (keeps previous behavior)
+    btn.addEventListener("touchstart", (e) => { e.preventDefault(); showForm(e); }, { passive:false });
     btn.addEventListener("mouseenter", showForm);
 
-    // Input typing actions
+    // INPUT LOGIC
     input.addEventListener("input", () => {
       input.value = input.value.replace(/\D/g, "");
       sendButton.disabled = input.value.length !== 10;
       resetTimer();
     });
 
-    // Keep the timer alive while the user is focused/typing (avoid accidental hide)
     input.addEventListener("focus", resetTimer);
     input.addEventListener("keyup", resetTimer);
-
-    // Leaving the form resets timer
     form.addEventListener("mouseleave", resetTimer);
 
-    // Send button
-    sendButton.addEventListener("click", () => {
+    // SEND MESSAGE (MOBILE-SAFE)
+    function sendMessage(){
       const mobile = input.value;
       if (mobile.length !== 10) return;
 
@@ -897,50 +914,51 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         })
         .catch(() => alert("Network error."));
-    });
+    }
+
+    sendButton.addEventListener("click", sendMessage);
+    sendButton.addEventListener("touchend", (e) => { e.preventDefault(); sendMessage(); });
 
   });
 
 });
 
 
-// Auto-restore floating buttons after mouse leaves entire area
+// --------------------------------
+// AUTO RESTORE FLOATING BUTTONS
+// --------------------------------
 const floatingArea = document.querySelector(".floating-buttons");
 let restoreTimer;
 
 floatingArea.addEventListener("mouseleave", () => {
   clearTimeout(restoreTimer);
-
   restoreTimer = setTimeout(() => {
-
-    // Hide ALL forms, show ALL buttons
     document.querySelectorAll(".btn-group").forEach(group => {
       group.querySelector(".inputForm").style.display = "none";
       group.querySelector(".float-btn").style.visibility = "visible";
     });
-
-  }, 500); // 0.5 seconds
+  }, 500);
 });
 
-// Mobile keyboard detection fix
-function keyboardOpen() {
-    document.querySelector(".floating-buttons")
-            .classList.add("keyboard-open");
+
+// --------------------------------
+// MOBILE KEYBOARD DETECTION
+// --------------------------------
+function keyboardOpen(){
+  document.querySelector(".floating-buttons").classList.add("keyboard-open");
 }
 
-function keyboardClose() {
-    document.querySelector(".floating-buttons")
-            .classList.remove("keyboard-open");
+function keyboardClose(){
+  document.querySelector(".floating-buttons").classList.remove("keyboard-open");
 }
 
 document.querySelectorAll(".mobileInput").forEach(inp => {
-    inp.addEventListener("focus", keyboardOpen);
-    inp.addEventListener("blur", keyboardClose);
+  inp.addEventListener("focus", keyboardOpen);
+  inp.addEventListener("blur", keyboardClose);
 });
 
-  
-  
 </script>
+
 
 </body>
 </html>
