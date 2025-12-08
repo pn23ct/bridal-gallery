@@ -246,15 +246,18 @@ footer{
   width: 240px;
 }
 
+/* Show input BELOW the floating button (not overlapping) */
 .inputForm {
   display: none;
   position: absolute;
-  top: 0;
+  top: 110%;       /* BELOW the button */
   left: 0;
   width: 100%;
   gap: 8px;
   align-items: center;
+  z-index: 99999;  /* keep above everything */
 }
+
 
 .mobileInput {
   padding: 8px 12px;
@@ -433,6 +436,13 @@ footer{
   }
 }
 
+/* Desktop indentation for send button */
+@media (min-width: 601px) {
+  .sendBtn {
+    transform: translateX(-10px);
+  }
+}
+ 
   
 </style>
 </head>
