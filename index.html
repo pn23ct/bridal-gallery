@@ -501,6 +501,34 @@ footer .footer-card:last-child {
     top: 65% !important;
   }
 }
+
+@media (max-width: 600px) {
+
+  .floating-buttons {
+    right: 10px;
+  }
+
+  /* Ensure input + send button stay inside screen */
+  .btn-group {
+    width: 90vw;            /* dynamic width inside screen */
+    max-width: 300px;
+    min-width: 180px;
+  }
+
+  .btn-group .inputForm {
+    width: 100%;
+  }
+
+  .mobileInput {
+    flex: 1;
+    min-width: 0;           /* IMPORTANT: allows shrinking properly */
+  }
+
+  .sendBtn {
+    flex-shrink: 0;         /* prevents the button from disappearing */
+  }
+}
+
   
 </style>
 </head>
