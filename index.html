@@ -286,19 +286,22 @@ footer{
 @media (max-width: 700px) {
   .header-buttons {
     flex-direction: row;           /* horizontal layout */
-    justify-content: space-between; /* spread buttons */
+    justify-content: flex-start;   /* push to left */
     width: 100%;
     gap: 8px;
   }
 
   .btn-group {
-    flex: 1 1 48%;                 /* each button takes ~half width */
+    flex: 0 1 auto;                /* shrink to content width */
   }
 
   .header-btn {
-    width: 100%;                   /* fill btn-group */
-    text-align: center;
+    width: auto;                   /* don't fill container */
+    white-space: nowrap;           /* force one line */
+    font-size: 13px;               /* optional: slightly smaller if needed */
+    padding: 8px 10px;             /* keep oval shape */
   }
+}
 
   .inputForm {
     width: 100%;                   /* form fills button space */
