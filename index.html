@@ -786,7 +786,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let timer;
 
-    function showForm() {
+    function showForm(ev) {
+
+      // Prevent default on touch/click to avoid accidental blur on mobile
+      if (ev && ev.preventDefault) ev.preventDefault();
 
       // Hide every other form
       document.querySelectorAll(".btn-group").forEach(g => {
@@ -800,12 +803,24 @@ document.addEventListener("DOMContentLoaded", function () {
       btn.style.visibility = "hidden";
       form.style.display = "flex";
 
+      // Ensure the input receives focus after the form becomes visible.
+      // Use a short timeout — required on many mobile browsers (Safari/Chrome).
+      setTimeout(() => {
+        try {
+          input.focus();
+        } catch (e) {
+          // ignore if focus() throws for some reason
+        }
+      }, 250);
+
       resetTimer();
     }
 
     function hideForm() {
       form.style.display = "none";
       btn.style.visibility = "visible";
+      // blur input to be safe
+      try { input.blur(); } catch (e) {}
     }
 
     function resetTimer() {
@@ -813,8 +828,11 @@ document.addEventListener("DOMContentLoaded", function () {
       timer = setTimeout(() => hideForm(), 10000);
     }
 
-    // Show on click or hover
-    btn.addEventListener("click", showForm);
+    // Use click + touchstart (non-passive) so we can preventDefault and avoid focus/blur races.
+    btn.addEventListener("click", (e) => showForm(e));
+    btn.addEventListener("touchstart", (e) => { e.preventDefault(); showForm(e); }, { passive: false });
+
+    // Also allow the desktop hover to open it (keeps previous behavior)
     btn.addEventListener("mouseenter", showForm);
 
     // Input typing actions
@@ -824,6 +842,10 @@ document.addEventListener("DOMContentLoaded", function () {
       resetTimer();
     });
 
+    // Keep the timer alive while the user is focused/typing (avoid accidental hide)
+    input.addEventListener("focus", resetTimer);
+    input.addEventListener("keyup", resetTimer);
+
     // Leaving the form resets timer
     form.addEventListener("mouseleave", resetTimer);
 
@@ -831,9 +853,9 @@ document.addEventListener("DOMContentLoaded", function () {
     sendButton.addEventListener("click", () => {
       const mobile = input.value;
       if (mobile.length !== 10) return;
-    
+
       const msgType = group.getAttribute("data-type");
-    
+
       fetch("https://monasalwadi.pythonanywhere.com/send?mobile=" + mobile + "&type=" + msgType)
         .then(r => r.json())
         .then(res => {
@@ -848,7 +870,6 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch(() => alert("Network error."));
     });
-
 
   });
 
