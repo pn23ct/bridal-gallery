@@ -235,6 +235,26 @@ footer{
   .btn-group{ width:160px; }
 }
 
+/* MOBILE — place the two buttons side-by-side */
+@media (max-width: 600px) {
+  .header-buttons {
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .btn-group {
+    width: 48%;        /* two equal width buttons side by side */
+  }
+
+  /* input forms should stay below each button, full width inside the group */
+  .btn-group .inputForm {
+    width: 100%;
+    flex-direction: row;
+  }
+}
+  
 /* visual focus states */
 .header-btn:focus,
 .mobileInput:focus,
