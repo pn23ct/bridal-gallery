@@ -101,81 +101,33 @@ header{
   align-items:flex-end;
 }
 
-/* Button group container: we animate the swap by changing max-height on .swap */
 .btn-group {
   position: relative;
-  width: auto;
-  overflow: visible;
-}
-
-/* swap wrapper: will animate max-height from button height to form height */
-.swap {
-  overflow: hidden;
-  max-height: 56px; /* default height matching button */
-  transition: max-height var(--transition-medium) ease, padding var(--transition-fast) ease;
-  display: block;
-  border-radius: 22px;
-}
-
-/* when open, allow more height for form (use CSS var for control) */
-.swap.open {
-  max-height: var(--swap-max-height);
-}
-
-/* internal layout: button and form stacked */
-.swap-inner {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 6px;
-  gap: 8px;
-  background: transparent;
-  transition: background var(--transition-fast);
-}
-
-/* Primary visible button */
-.header-btn{
-  background: linear-gradient(180deg, rgba(191,144,43,1), rgba(150,110,33,1));
-  color:#fff;
-  border:0;
-  padding:10px 14px;
-  border-radius:22px;
-  font-family:'Armata',sans-serif;
-  font-weight:700;
-  cursor:pointer;
-  text-align:center;
-  white-space:nowrap;
-  box-shadow: 0 2px 8px rgba(191,144,43,0.12);
-  transition: transform var(--transition-fast) ease, opacity var(--transition-fast) ease;
-  display:inline-flex;
-  align-items:center;
-}
-
-/* The input form (hidden by default inside swap) */
-.inputForm {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 0;
-  opacity: 0;
-  transform: translateY(-6px);
-  transition: opacity var(--transition-fast) ease, transform var(--transition-fast) ease;
-  pointer-events: none;
   width: 100%;
 }
 
-/* when swap open, reveal form */
-.swap.open .inputForm {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
+/* Button visible by default */
+.header-btn {
+  display: inline-flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 }
 
-/* when swap open, fade out button */
-.swap.open .header-btn {
-  opacity: 0;
-  transform: translateY(-6px) scale(0.98);
-  pointer-events: none;
+/* Form hidden by default */
+.inputForm {
+  display: none;
+  width: 100%;
+  gap: 6px;
+}
+
+/* Show form instead of button */
+.btn-group.active .header-btn {
+  display: none;
+}
+
+.btn-group.active .inputForm {
+  display: flex;
 }
 
 /* Input + send button layout */
@@ -620,30 +572,57 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // attach handlers for each group
-  document.querySelectorAll('.btn-group').forEach(group => {
-    const swap = group.querySelector('.swap');
-    const btn = group.querySelector('.header-btn');
-    const form = group.querySelector('.inputForm');
-    const input = form.querySelector('.mobileInput');
-    const send = form.querySelector('.sendBtn');
+document.querySelectorAll('.btn-group').forEach(group => {
+  const btn = group.querySelector('.header-btn');
+  const form = group.querySelector('.inputForm');
+  const input = form.querySelector('.mobileInput');
+  const send = form.querySelector('.sendBtn');
 
-    // ensure initial state
-    swap.classList.remove('open');
-    swap.setAttribute('aria-expanded','false');
-    form.setAttribute('aria-hidden','true');
-    btn.setAttribute('aria-expanded','false');
+  btn.addEventListener('click', () => {
+    group.classList.add('active'); // show form, hide button
+    input.focus();
+  });
+
+  // auto-hide when input loses focus (optional)
+  input.addEventListener('blur', () => {
+    setTimeout(() => {
+      group.classList.remove('active'); // hide form, show button
+      input.value = '';
+      send.disabled = true;
+    }, 200);
+  });
+
+  // enable send button only when 10 digits entered
+  input.addEventListener('input', () => {
+    input.value = input.value.replace(/\D/g,'').slice(0,10);
+    send.disabled = input.value.length !== 10;
+  });
+
+  // Send action
+  send.addEventListener('click', () => {
+    const mobile = input.value.trim();
+    if (mobile.length !== 10) return;
+    const type = group.dataset.type;
+
     send.disabled = true;
+    send.textContent = 'Sending...';
 
-    // Desktop: hover shows, hides on leave
-    if (hasHover){
-      group.addEventListener('mouseenter', () => {
-        showFormFor(group);
-        resetTimer(group);
+    fetch(`https://monasalwadi.pythonanywhere.com/send?mobile=${encodeURIComponent(mobile)}&type=${encodeURIComponent(type)}`)
+      .then(resp => resp.json())
+      .then(json => {
+        alert(json.status === 'ok' ? "Message received!" : "Server error!");
+        group.classList.remove('active');
+        input.value = '';
+        send.disabled = true;
+        send.textContent = 'Send';
+      })
+      .catch(() => {
+        alert("Network error!");
+        send.disabled = false;
+        send.textContent = 'Send';
       });
-      group.addEventListener('mouseleave', () => {
-        resetTimer(group); // follow the 2 sec rule
-      });
-    }
+  });
+});
 
     // Click / touch → toggle (mobile & desktop click)
     const openOnPointer = (ev) => {
