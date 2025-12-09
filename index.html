@@ -66,12 +66,20 @@ header{
   flex-direction:column;
   align-items:center;
 }
-.header-center h1{
-  font-family:'Lobster';
-  margin:0;
-  font-size:34px;
-  font-weight:700;
-  color:var(--gold);
+.header-center h1 {
+  font-family: 'Lobster';
+  margin: 0;
+  font-size: 34px;
+  font-weight: 700;
+  color: #bf902b;
+
+  /* subtle 3D depth */
+  text-shadow:
+    1px 1px 0 #8c6a1b,
+    2px 2px 0 #6b5014,
+    3px 3px 5px rgba(0,0,0,0.55);
+  
+  letter-spacing: 0.5px;
 }
 .header-center p{
   margin:6px 0 0;
