@@ -126,20 +126,67 @@ min-width: 240px;
   font-size:12px;
   width:180px;
 }
-.sendBtn{
-  padding:6px 12px;
-  border-radius:16px;
-  border:none;
-  background:#bf902b;
-  color:#fff;
-  font-weight:bold;
-  font-size:12px;
-  cursor:pointer;
-  opacity:0.7;
+.sendBtn {
+  padding: 8px 14px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+
+  /* glassy gold style matching .header-btn */
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(6px);
+  color: #bf902b;
+
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+
+  box-shadow:
+    0 0 10px rgba(255, 205, 80, 0.6),
+    0 0 18px rgba(255, 215, 120, 0.4),
+    inset 0 0 6px rgba(255, 220, 150, 0.3);
 }
-.sendBtn:enabled{
-  opacity:1;
+
+/* gold gradient border */
+.sendBtn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 3px;
+  background: linear-gradient(140deg,
+      #fff7d1,
+      #f5d277,
+      #e0b047,
+      #b9851e,
+      #e0b047,
+      #f5d277
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
 }
+
+/* shiny highlight */
+.sendBtn::after {
+  content: "";
+  position: absolute;
+  width: 40%;
+  height: 30%;
+  top: -5%;
+  left: -5%;
+  background: radial-gradient(
+      circle,
+      rgba(255,255,255,0.9),
+      rgba(255,255,255,0) 70%
+  );
+  pointer-events: none;
+}
+
 
 /* LAPTOP FIX (reduce button width) */
 @media(min-width:901px){
