@@ -806,7 +806,7 @@ document.addEventListener('DOMContentLoaded', () => {
       fetch(`https://monasalwadi.pythonanywhere.com/send?mobile=${encodeURIComponent(mobile)}&type=${encodeURIComponent(type)}`)
         .then(resp => resp.json())
         .then(json => {
-          alert(json.status === 'ok' ? "Thank you! We'll call you soon." : "Server error, try again.");
+          alert(json.status === 'ok' ? "Message received. Thank you!. If you don't receive callback within half an hour, please call 90110 47922." : "Oops! something went wrong. Please call 90110 47922");
           hideForm();
           send.textContent = 'Send';
         })
