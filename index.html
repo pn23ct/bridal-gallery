@@ -70,36 +70,37 @@ header{
 .header-center h1 {
   font-family: 'Lobster';
   margin: 0;
-  font-size: 48px; /* increased for better 3D */
+  font-size: 48px;
   font-weight: 700;
   letter-spacing: 0.5px;
 
-  /* shiny gold reflective look */
+  /* shiny metallic gold gradient */
   background: linear-gradient(
     to bottom,
-    #fff7d1 0%,
-    #f5d67b 18%,
+    #fff0a8 0%,   /* bright gold highlight */
+    #f7d46b 18%,
     #d4a531 45%,
     #b88919 60%,
-    #ffe9a8 82%,
+    #ffe08c 82%,
     #9e6f00 100%
   );
   -webkit-background-clip: text;
   color: transparent;
 
-  /* chrome-style 3D shadows */
+  /* gold highlight + 3D depth */
   text-shadow:
-    /* inner highlight */
-    0px -2px 2px rgba(255,255,255,0.9),
+    /* gold highlight replacing white */
+    0px -2px 2px rgba(255, 215, 100, 0.9),
+    0px -1px 1px rgba(255, 200, 80, 0.85),
 
-    /* main 3D depth */
+    /* 3D depth */
     2px 2px 1px rgba(0,0,0,0.55),
     4px 4px 3px rgba(0,0,0,0.6),
     6px 6px 6px rgba(0,0,0,0.65),
 
-    /* subtle gold glow */
-    0 0 12px rgba(255,190,60,0.35),
-    0 0 20px rgba(255,170,20,0.25);
+    /* softer golden glow */
+    0 0 10px rgba(255,190,60,0.35),
+    0 0 18px rgba(255,160,0,0.25);
 }
 
 
