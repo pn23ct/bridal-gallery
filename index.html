@@ -67,6 +67,7 @@ header{
   align-items:center;
 }
 
+
 .header-center h1 {
   font-family: 'Lobster';
   margin: 0;
@@ -74,34 +75,32 @@ header{
   font-weight: 700;
   letter-spacing: 0.5px;
 
-  /* shiny gold gradient */
+  /* refined gold gradient with smaller highlight area */
   background: linear-gradient(
     to bottom,
-    #fff0b3 0%,    /* warm pale gold highlight */
-    #f5d67b 18%,
-    #d4a531 45%,
+    #ffe9a8 0%,      /* reduced warm highlight */
+    #f4cf69 12%,     /* highlight ends sooner */
+    #d4a531 40%,
     #b88919 60%,
-    #ffe9a8 82%,
     #9e6f00 100%
   );
   -webkit-background-clip: text;
   color: transparent;
 
-  /* 3D depth + softer golden highlight */
+  /* tighter & smaller highlight shadow */
   text-shadow:
-    /* warm highlight instead of white */
-    0px -2px 2px rgba(255, 225, 150, 0.9),
+    /* shrunk highlight */
+    0px -1px 1px rgba(255, 220, 140, 0.75),
 
-    /* main 3D depth */
+    /* 3D depth */
     2px 2px 1px rgba(0,0,0,0.55),
     4px 4px 3px rgba(0,0,0,0.6),
     6px 6px 6px rgba(0,0,0,0.65),
 
-    /* subtle gold glow */
-    0 0 12px rgba(255,190,60,0.35),
-    0 0 20px rgba(255,170,20,0.25);
+    /* softer glow */
+    0 0 10px rgba(255,190,60,0.3),
+    0 0 16px rgba(255,170,20,0.22);
 }
-
 
   
 .header-center p{
