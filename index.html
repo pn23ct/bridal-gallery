@@ -369,23 +369,24 @@ footer{
 }
 
 .line .item {
-  padding-right: 6px;
   background: #000;
+  padding-right: 6px;
+  white-space: nowrap;
 }
 
-.line::after {
-  content: "";
+.line .dots {
   flex: 1;
   border-bottom: 1px dotted #bf902b;
   margin: 0 6px;
+  height: 0; /* prevents line from taking vertical space */
 }
-
 
 .line .price {
-  margin-left: auto;
-  padding-left: 6px;
   background: #000;
+  padding-left: 6px;
+  white-space: nowrap;
 }
+
 
 .prod-line {
   border-color: #bf902b;
