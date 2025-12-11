@@ -361,6 +361,19 @@ footer{
   font-weight:700;
 }
 
+.highlighted-item {
+  position: relative;
+  font-weight: 600;
+}
+
+.highlighted-item::before,
+.highlighted-item::after {
+  content: "★"; /* you can replace with any icon */
+  color: #e91e63; /* icon color */
+  font-size: 16px;
+  margin: 0 6px;
+}
+
  
 .line {
   display: flex;
@@ -565,7 +578,7 @@ footer{
     <div class="footer-content">
 
       <p class="line">
-        <span class="item">Premium Bridal Package</span>
+        <span class="item highlighted-item">Premium Bridal Package</span>
         <span class="dots"></span>
         <span class="price">₹17,999</span>
       </p>
@@ -578,7 +591,7 @@ footer{
       <p class="line">
       <p class="line">
       <p class="line" style="margin-top:12px;">
-        <span class="item">Basic Bridal Package</span>
+        <span class="item highlighted-item">Basic Bridal Package</span>
         <span class="dots"></span>
         <span class="price">₹15,499</span>
       </p>
@@ -594,19 +607,19 @@ footer{
       </p>
       </p>
       <p class="line">
-        <span class="item">Premium Bridal Makeup</span>
+        <span class="item highlighted-item">Premium Bridal Makeup</span>
         <span class="dots"></span>
         <span class="price">₹9,999</span>
       </p>
       </p>
       <p class="line">
-        <span class="item">Basic Bridal Makeup</span>
+        <span class="item highlighted-item">Basic Bridal Makeup</span>
         <span class="dots"></span>
         <span class="price">₹7,999</span>
       </p>
       </p>
       <p class="line">
-        <span class="item">Engagement Makeup</span>
+        <span class="item highlighted-item">Engagement Makeup</span>
         <span class="dots"></span>
         <span class="price">₹4,999</span>        
       </p>
@@ -625,7 +638,7 @@ footer{
      </div>
     <div class="footer-content">
       <p class="line">
-        <span class="item">Baby Shower Makeup</span>
+        <span class="item highlighted-item">Baby Shower Makeup</span>
         <span class="dots"></span>
         <span class="price">₹3,500</span>
       </p>
@@ -636,7 +649,7 @@ footer{
       <p class="line">
       <p class="line">
       <p class="line">
-        <span class="item">Guest / Sider Makeup</span>
+        <span class="item highlighted-item">Guest / Sider Makeup</span>
         <span class="dots"></span>
         <span class="price">₹2,500</span>
       </p>
@@ -652,21 +665,21 @@ footer{
         </p>
         </p>
         <p class="line">
-          <span class="item">Hair-Styling</span>
+          <span class="item highlighted-item">Hair-Styling</span>
           <span class="dots"></span>
           <span class="price">₹800</span>
         </p>
         </p>
 
         <p class="line">
-          <span class="item">Saree Draping</span>
+          <span class="item highlighted-item">Saree Draping</span>
           <span class="dots"></span>
           <span class="price">₹500</span>
         </p>
         </p>
       
         <p class="line">
-          <span class="item">Saree Pre-pleating</span>
+          <span class="item highlighted-item">Saree Pre-pleating</span>
           <span class="dots"></span>
           <span class="price">₹200</span>
         </p>
