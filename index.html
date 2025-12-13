@@ -373,7 +373,26 @@ footer{
   margin: 0 6px;
 }
 
- 
+/* SHAPO REVIEWS FIX */
+.shapo-container {
+  overflow: hidden;
+}
+
+/* Desktop & tablet */
+@media (min-width: 769px) {
+  .shapo-container {
+    height: 320px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .shapo-container {
+    height: auto;
+    overflow: visible;
+  }
+}
+
 .line {
   display: flex;
   align-items: center;
